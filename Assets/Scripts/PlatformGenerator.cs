@@ -45,7 +45,7 @@ public class PlatformGenerator : MonoBehaviour
         nextPLatform = StartCoroutine(NextPlatform()); //repeat creation
     }
 
-     private void LateUpdate() //move each creation
+    private void LateUpdate() //move each creation
     {
         if (tempPlatform != null)
         {
@@ -57,6 +57,14 @@ public class PlatformGenerator : MonoBehaviour
             {
                 tempPlatform.transform.position -= tempPlatform.transform.right * Time.deltaTime * 3f;
             }   
+        }
+
+        if (Input.GetMouseButtonDown(0)) //screen tap
+        { 
+            StopCoroutine(nextPLatform); //stop creation and movement
+            tempPlatform = null;
+
+            nextPLatform = StartCoroutine(NextPlatform()); //start again after 2 seconds(WaitForSeconds in coroutine)
         }
     }
 }
