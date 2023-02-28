@@ -34,15 +34,16 @@ public class Slicer : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision other) {
-        if (timer <= 0) {
+      //  if (timer <= 0) {
             if (other.gameObject.tag == "Slicable") {
                 timer += 1;
                 slice(other);
             }
-        }
+        //}
     }
 
     void slice(Collision other) {
+        Debug.Log("slice");
         Collider coll = GetComponent<Collider>();
 
         // Create cutting plane
@@ -101,7 +102,7 @@ public class Slicer : MonoBehaviour {
 
             // Group tris and create new tris
             if (points.Count > 0) {
-                Debug.Assert(points.Count == 2);
+//                Debug.Assert(points.Count == 2);
                 List<Vector3> points1 = new List<Vector3>();
                 List<Vector3> points2 = new List<Vector3>();
                 // Intersection verts
@@ -209,8 +210,9 @@ public class Slicer : MonoBehaviour {
         if (intersections.Count > 0) {
             // Creates new meshes
             Material mat = other.gameObject.GetComponent<MeshRenderer>().material;
-            Destroy(other.gameObject);
-
+            //Destroy(other.gameObject);
+            other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+             
             Mesh mesh1 = new Mesh();
             Mesh mesh2 = new Mesh();
 
@@ -265,6 +267,7 @@ public class Slicer : MonoBehaviour {
             mc1.sharedMesh = mesh1;
             go1.tag = "Slicable";
 
+            go1.SetActive(false);
             MeshFilter mf2 = go2.AddComponent<MeshFilter>();
             mf2.mesh = mesh2;
             MeshRenderer mr2 = go2.AddComponent<MeshRenderer>();
@@ -273,9 +276,17 @@ public class Slicer : MonoBehaviour {
             //if (mf2.mesh.vertexCount <= 255) {
                 mc2.convex = true;
                 go2.AddComponent<Rigidbody>();
+
+                go2.GetComponent<Rigidbody>().isKinematic = true;
             //}
             mc2.sharedMesh = mesh2;
             go2.tag = "Slicable";
+            
+            Transform otherObj = other.gameObject.GetComponent<StackPrefab>().sliceObjects[0].transform; 
+            otherObj.position = new Vector3(go2.GetComponent<MeshFilter>().mesh.bounds.center.x + go2.GetComponent<MeshFilter>().mesh.bounds.extents.x , otherObj.position.y, otherObj.position.z);
+            
+            Transform otherObj1 = other.gameObject.GetComponent<StackPrefab>().sliceObjects[1].transform; 
+            otherObj1.position = new Vector3(go2.GetComponent<MeshFilter>().mesh.bounds.center.x + -go2.GetComponent<MeshFilter>().mesh.bounds.extents.x , otherObj1.position.y, otherObj1.position.z);
         }
     }
 }

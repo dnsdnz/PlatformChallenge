@@ -64,6 +64,8 @@ public class PlatformGenerator : MonoBehaviour
             StopCoroutine(nextPLatform); //stop creation and movement
             tempPlatform = null;
 
+            platformList[platformList.Count - 2].GetComponent<StackPrefab>().Slicer();
+
             nextPLatform = StartCoroutine(NextPlatform()); //start again after 2 seconds(WaitForSeconds in coroutine)
         }
     }
