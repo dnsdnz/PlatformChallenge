@@ -10,7 +10,7 @@ public class PlatformGenerator : MonoBehaviour
 
     public List<GameObject> platformList = new List<GameObject>();
  
-    private Coroutine nextPLatform; //coroutine for continuos creation of platfroms
+    private Coroutine nextPlatform; //coroutine for continuous creation of platfmors
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class PlatformGenerator : MonoBehaviour
         
         platformList.Add(tempPlatform); //add to platform list
 
-        nextPLatform = StartCoroutine(NextPlatform()); //repeat creation
+        nextPlatform = StartCoroutine(NextPlatform()); //repeat creation
     }
 
     private GameObject tempPlatform;
@@ -42,7 +42,7 @@ public class PlatformGenerator : MonoBehaviour
       
         platformList.Add(tempPlatform);
         
-        nextPLatform = StartCoroutine(NextPlatform()); //repeat creation
+        nextPlatform = StartCoroutine(NextPlatform()); //repeat creation
     }
 
     private void LateUpdate() //move each creation
@@ -61,12 +61,12 @@ public class PlatformGenerator : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) //screen tap
         { 
-            StopCoroutine(nextPLatform); //stop creation and movement
+            StopCoroutine(nextPlatform); //stop creation and movement
             tempPlatform = null;
 
             platformList[platformList.Count - 2].GetComponent<StackPrefab>().Slicer();
 
-            nextPLatform = StartCoroutine(NextPlatform()); //start again after 2 seconds(WaitForSeconds in coroutine)
+            nextPlatform = StartCoroutine(NextPlatform()); //start again after 2 seconds(WaitForSeconds in coroutine)
         }
     }
 }
